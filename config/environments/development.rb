@@ -15,8 +15,16 @@ Rails3SubdomainDevise::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.raise_delivery_errors = false
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
+  
+  ### ActionMailer Config
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  # A dummy setup for development - no deliveries, but logged
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default :charset => "utf-8"
 end
