@@ -1,2 +1,3 @@
 <h1>Site: <%= @site.name %></h1>
-<p>Belongs to: <%= link_to @site.user.name, user_url(@site.user) %></p>
+<p>Belongs to: <%= link_to @site.user.name, user_url(@site.user, :subdomain => false) %></p>
+<p><%= link_to 'Home', root_url(:subdomain => false) %></p>
