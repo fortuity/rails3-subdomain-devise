@@ -227,11 +227,11 @@ We've already installed the Devise gem with the @$ bundle install@ command. Run 
 
 @$ rails generate devise:install@
 
-which installs a configuration file:
+which installs a localization file and a configuration file:
 
 *config/initializers/devise.rb*
 
-and a localization file.
+Now is a good time to change the value @config.mailer_sender@ in the configuration file.
 
 In its default configuration, Devise needs to send email to register a new user or reset a password. We'll need to set up action_mailer.
 
