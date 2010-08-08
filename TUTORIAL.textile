@@ -83,22 +83,22 @@ Initialize git and check in your first commit:
 @$ git add .@
 @$ git commit -m 'initial commit'@
 
-You can check your commit status at any time with:
-
-@$ git status@
-
 At this point you can check your local project into a remote source control repository. We'll assume you are using git with an account at GitHub.
 
 Check that your GitHub account is set up properly:
 
-@$ ssh git\@github.com@
+@$ ssh git(at)github.com@
 
 Go to GitHub and create a new empty repository ("http://github.com/repositories/new":http://github.com/repositories/new) into which you can push your local git repo.
 
 Add GitHub as a remote repository for your project and push your local project to the remote repository:
 
-@$ git remote add origin git\@github.com:YOUR_GITHUB_ACCOUNT/YOUR_PROJECT_NAME.git@
+@$ git remote add origin git(at)github.com:YOUR_GITHUB_ACCOUNT/YOUR_PROJECT_NAME.git@
 @$ git push origin master@
+
+You can check your commit status at any time with:
+
+@$ git status@
 
 At each stage of completion, you should check your code into your local repository:
 
@@ -119,9 +119,9 @@ The application uses the following gems:
 * devise (version 1.1.1)
 * friendly_id (version 3.1.1.1)
 
-The SQLite3 gem is used for the database for this example application. You can substitute a different database if you wish.
+The SQLite3 gem is used for the database. You can substitute a different database if you wish.
 
-In this app, the FriendlyId gem is used to give users and subdomains easily recognizable strings instead of numeric ids in URLs.
+The FriendlyId gem is used to give users and subdomains easily recognizable strings instead of numeric ids in URLs.
 
 h3. Set up Your Gemfile
 
@@ -138,7 +138,7 @@ gem 'friendly_id', '3.1.1.1'
 
 h3. Optional Gems
 
-The following gem is not needed for the application to run but you may want to add it if you wish to deploy to Heroku.
+If you wish to deploy to Heroku, you will need to include the following gem:
 
 <pre>
 # uncomment the next line if you wish to deploy to Heroku
@@ -191,7 +191,7 @@ Delete the default home page from your application:
 
 @$ rm public/index.html@
 
-You may also want to modify the file public/robots.txt to prevent indexing by search engines if you plan to have a development version on a publicly accessible server:
+You may also want to modify the file *public/robots.txt* to prevent indexing by search engines if you plan to have a development version on a publicly accessible server:
 
 <pre>
 # To ban all spiders from the entire site uncomment the next two lines:
@@ -306,13 +306,15 @@ to add a "name" field to the data table.
 
 Next, we'll modify the User model to allow a "name" to be included when adding or updating a record. 
 
-We'll also modify the User model so the URL for accessing a user uses a name instead of a number (the friendly_id gem provides this feature).
+We'll also modify the User model so the URL for accessing a user uses a name instead of a number (the FriendlyId gem provides this feature).
 
 You'll also want to prevent malicious hackers from creating fake web forms that would allow changing of passwords through the mass-assignment operations of update_attributes(attrs) and new(attrs). With the default Rails ActiveRecord, Devise adds
 
 <pre>
 attr_accessible :email, :password, :password_confirmation, :remember_me
 </pre>
+
+We'll need to add the @:name@ attribute to attr_accessible.
 
 Modify the file *models/user.rb* to include this:
 
@@ -327,7 +329,7 @@ This will allow users to be created (or edited) with a name attribute. When a us
 
 h3. Create Model and Migration for Subdomains
 
-Each user will be able to register and use a subdomain.
+Each user will be able to register and use a subdomain. We'll create a Subdomain model that belongs to a User. In this implementation, the Subdomain model just stores a string that is the name of the subdomain. Later, we'll create another model, the Site, that subclasses Subdomain and is used to create the page that is hosted at a URL using the name of the subdomain.
 
 Generate a model and migration for Subdomains. Since a Subdomain will belong to a user, the "user:references" parameter adds a field "user_id" to the data table to handle the relationship with a User:
 
@@ -348,6 +350,8 @@ When a subdomain is created, it must have a name and the name must be unique.
 
 h3. Enable Users to Own Subdomains
 
+A registered user will access his or her profile on the main site to add or delete subdomains.
+
 Subdomains belong to users, so we have to set up the User side of the relationship. Modify the file *models/user.rb* to look like this:
 
 <pre>
@@ -364,7 +368,7 @@ end
 
 h3. Create a Site Model
 
-We'll create a Site model as a subclass of the Subdomain model so that each user can view a site at their subdomain. The Site is a simple stub in this application. It can be customized for additional functionality (for example, implementation as a blog).
+We'll create a Site model as a subclass of the Subdomain model so any visitor can view a subdomain-hosted site. The Site is a simple stub in this application. It can be customized for additional functionality (for example, implementation as a blog).
 
 The Site model is very simple so there's no need to use a generator. Just create a file *app/models/site.rb* containing:
 
@@ -446,7 +450,7 @@ Note that Devise's default behaviour allows any logged-in user to edit or delete
 
 h3. Create a Controller and Views to Display Users
 
-The site's home page has no subdomain. We want to add a list of users to the home page. And we want links to pages that shows details about each user.
+The site's home page has no subdomain. We want to add a list of users to the home page. And we want links to pages that shows details about each user. Later we'll add a list to the details page that shows which subdomains they own.
 
 Create a controller to display users:
 
@@ -812,7 +816,7 @@ we can use:
 
 h3. Create a Controller and Views to Display Subdomain Sites
 
-Each registered user can create any number of subdomains which will be hosts for the user's "sites." This app does not provide any functionality for a user's "sites," but you can add functionality so each user can have a blog or other features for their "site." In this step, we will create a simple stub that displays a "site" page as the home page of any registered subdomain.
+In this step, we will create a simple stub that displays a "site" page as the home page of any registered subdomain.
 
 Create a controller to display sites:
 
@@ -842,7 +846,7 @@ Add the following code to the file:
 
 h3. Implement Routing for Sites
 
-At this point you can use the Rails 3 built-in support for subdomains.
+At this point you can use the Rails 3 built-in routing support for subdomains.
 
 Edit the file *config/routes.rb* to look like this:
 
@@ -857,33 +861,27 @@ root :to => "home#index"
 
 h3. Test the Application With Subdomains
 
-If you launch the application, it will be running at "http://localhost:3000/":http://localhost:3000/. However, unless you've made some configuration changes to your computer, you won't be able to resolve an address that uses a subdomain, such as "http://foo.localhost:3000/":http://foo.localhost:3000/. There are several complex solutions to this problem. You could set up your own domain name server on your localhost and create an A entry to catch all subdomains. You could modify your */etc/hosts* file (but it won't accommodate dynamically created subdomains). You can create a "proxy auto-config (PAC)":http://en.wikipedia.org/wiki/Proxy_auto-config file and set it up as the proxy in your web browser preferences. There's a far simpler solution that does not require reconfiguring your computer or web browser preferences. The developer Levi Cook registered a domain, lvh.me (short for: local virtual host me), that resolves to the localhost IP address 127.0.0.1 and supports wildcards (accommodating dynamically created subdomains). Thanks, Levi!
+If you launch the application, it will be running at "http://localhost:3000/":http://localhost:3000/. However, unless you've made some configuration changes to your computer, you won't be able to resolve an address that uses a subdomain, such as "http://foo.localhost:3000/":http://foo.localhost:3000/. There are several complex solutions to this problem. You could set up your own domain name server on your localhost and create an A entry to catch all subdomains. You could modify your */etc/hosts* file (but it won't accommodate dynamically created subdomains). You can create a "proxy auto-config (PAC)":http://en.wikipedia.org/wiki/Proxy_auto-config file and set it up as the proxy in your web browser preferences. There's a far simpler solution that does not require reconfiguring your computer or web browser preferences. The developer Levi Cook registered a domain, "lvh.me":http://lvh.me:3000/ (short for: local virtual host me), that resolves to the localhost IP address 127.0.0.1 and supports wildcards (accommodating dynamically created subdomains). See "Tim Pope's blog post":http://tbaggery.com/2010/03/04/smack-a-ho-st.html for a NSFW alternative.
 
 To test the application, visit "http://lvh.me:3000/":http://lvh.me:3000/. You can also try "http://foo.lvh.me:3000/":http://foo.lvh.me:3000/ or "http://bar.lvh.me:3000/":http://bar.lvh.me:3000/.
 
-h2. Enhanced Handling of Subdomains
+h2. Add Navigation Between Sites
 
-In his screencast "Subdomains in Rails 3":http://railscasts.com/episodes/221-subdomains-in-rails-3, Ryan Bates makes some useful suggestions for improved handling of URLs that contain subdomains. He suggests creating a method that ignores a "www" subdomain. He also shows how to write a helper that constructs a URL with an optional subdomain parameter. 
+Applications that do not use subdomains use routing helpers to generate links that either include the site's hostname (for example, @users_url@ generates @http://mysite.com/users@) or links that only contain a relative path (for example, @users_path@ generates @/users@).
 
-In a June 19, 2010 blog post on "Custom Subdomains in Rails 3":http://bcardarella.com/post/716951242/custom-subdomains-in-rails-3, Brian Cardarella makes similar suggestions (you may want to compare his implementation with Ryan Bates's).
-
-We'll add these tricks for this application.
-
-h3. Ignore a "www" Subdomain
-
-In his screencast, Ryan Bates shows how to create a routing constraint that will redirect a "www" URL to the main home page. Unfortunately the implementation doesn't work in the Rails 3 release candidate.
-
-If you have a solution , please open an "issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub and I will update this example to include it.
-
-h3. Overwriting the URL Helper
-
-A completely functional application will need to take a subdomain as a parameter when generating links. You can specify a host when creating a link, with the syntax:
+To provide navigation between sites hosted on the subdomains and the main site, you must use URL helpers ("users_url") not path helpers ("users_path") because path helpers do not include a hostname. You'll also need to find a way to include a subdomain as part of the hostname when generating links. You can specify a hostname when creating a link, with the syntax:
 
 @root_url(nil, {:host => "subdomain.somedomain.com"})@
 
 but this will require you to hardcode the name of the host into every link. Ideally, we should be able to pass a :subdomain option to the url helper, like this:
 
 @root_url(:subdomain => @subdomain.name)@
+
+In his screencast "Subdomains in Rails 3":http://railscasts.com/episodes/221-subdomains-in-rails-3, Ryan Bates makes some useful suggestions for improved handling of URLs that contain subdomains. He shows how to write a helper that constructs a URL with an optional subdomain parameter. 
+
+In a June 19, 2010 blog post on "Custom Subdomains in Rails 3":http://bcardarella.com/post/716951242/custom-subdomains-in-rails-3, Brian Cardarella makes similar suggestions (you may want to compare his implementation with Ryan Bates's).
+
+h3. Overwriting the URL Helper
 
 Ryan Bates suggests the following. Create a *app/helpers/url_helper.rb* file with the following code:
 
@@ -913,11 +911,9 @@ class ApplicationController < ActionController::Base
 end
 </pre>
 
-h2. Add Navigation Between Sites
-
-To provide navigation between sites hosted on the subdomains and the main site, you'll need to use the custom URL helpers we created above. To generate links, you must use URL helpers ("users_url") not path helpers ("users_path") because path helpers do not include a subdomain and hostname.
-
 h3. Use Subdomain-Specific Links
+
+To provide navigation between sites hosted on the subdomains and the main site, you'll need to use the custom URL helpers we created above.
 
 To add links from a subdomain-hosted site to the main site, modify the code in the file:
 
@@ -927,6 +923,30 @@ To add links from a subdomain-hosted site to the main site, modify the code in t
 <h1>Site: <%= @site.name %></h1>
 <p>Belongs to: <%= link_to @site.user.name, user_url(@site.user, :subdomain => false) %></p>
 <p><%= link_to 'Home', root_url(:subdomain => false) %></p>
+</pre>
+
+You can also modify the users' details pages to include links to their sites.
+
+Edit the file *app/views/users/show.html.erb* to look like this:
+
+<pre>
+<h1><%= @user.name %></h1>
+<p>Email: <%= @user.email %></p>
+<%= link_to 'Edit', edit_user_registration_path %> |
+<%= link_to 'List of Users', users_path %>
+<h3><%= @user.name %>'s Subdomains</h3>
+<table>
+<% @user.subdomains.each do |subdomain| %>
+  <tr>
+    <td><%= link_to subdomain.name, subdomain %></td>
+    <td><%= link_to 'Edit', edit_subdomain_path(subdomain) %></td>
+    <td><%= link_to 'Destroy', subdomain, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to "Visit #{site_url(:subdomain => subdomain.name)}", site_url(:subdomain => subdomain.name) %></td>
+  </tr>
+<% end %>
+</table>
+<br />
+<%= link_to "Add New Subdomain", new_user_subdomain_path(@user) %>
 </pre>
 
 h3. Prevent Use of the Main Site With Subdomain URLs
@@ -946,6 +966,7 @@ class ApplicationController < ActionController::Base
     def limit_subdomain_access
         if request.subdomain.present?
           # this error handling could be more sophisticated!
+          # please make a suggestion :-)
           redirect_to root_url(:subdomain => false)
         end
     end
@@ -969,6 +990,10 @@ class SitesController < ApplicationController
 
 end
 </pre>
+
+h2. Ignore a "www" Subdomain
+
+In his screencast "Subdomains in Rails 3":http://railscasts.com/episodes/221-subdomains-in-rails-3, Ryan Bates shows how to create a routing constraint that will redirect a "www" URL to the main home page. Unfortunately the implementation doesn't work in the Rails 3 release candidate. If you have a solution or workaround, please open an "issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub and I will update this example to include it.
 
 h2. Maintaining Sessions Across Subdomains
 
@@ -1004,17 +1029,19 @@ Test the app by logging in to the main site and then visiting a subdomain-hosted
 
 h3. Allow Cookies To Be Shared Across Subdomains
 
-To maintain sessions between the main site and subdomain-hosted sites, modify the configuration file to add the parameter @:domain => '.lvh.me'@:
+To maintain sessions between the main site and subdomain-hosted sites, modify the configuration file to add the parameter @:domain => :all@:
 
 *config/initializers/sesion_store.rb*
 
 <pre>
-Rails3SubdomainDevise::Application.config.session_store :cookie_store, :key => '_rails3-subdomain-devise_session', :domain => ".lvh.me"
+Rails3SubdomainDevise::Application.config.session_store :cookie_store, :key => '_rails3-subdomain-devise_session', :domain => :all
 </pre>
 
-*Note:* We should be able to use the parameter @:domain => :all@ so we don't have to hardcode the domain name in the app. But using @:domain => :all@ gives us the error "ActionController::InvalidAuthenticityToken in Devise/sessionsController#create" when we attempt to log in. Looks like "an open bug":https://rails.lighthouseapp.com/projects/8994/tickets/5147-the-all-domain-option-for-the-cookie-session-store-doesnt-allow-non-standard-tlds-like-local-or-couk.
+Alternatively, we can use the domain name of the deployed application (with a prepended dot), such as @:domain => ".mysite.com"@. However, by using the parameter @:domain => :all@ we don't have to hardcode the domain name in the app and we can test the app on our localhost machine.
 
-*Note:* Using @:domain => '.lvh.me'@ doesn't allow us to maintain sessions across subdomains. 
+*Note:* Using @:domain => :all@ gives us the error "ActionController::InvalidAuthenticityToken in Devise/sessionsController#create" when we attempt to log in. 
+
+*Note:* Using @:domain => '.lvh.me'@ doesn't work. It won't allow us to maintain sessions across subdomains. Looks like "an open bug":https://rails.lighthouseapp.com/projects/8994/tickets/5147-the-all-domain-option-for-the-cookie-session-store-doesnt-allow-non-standard-tlds-like-local-or-couk in the Rails 3 release candidate.
 
 If this worked properly, we could say:
 
