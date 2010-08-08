@@ -1,5 +1,16 @@
 <h1><%= @user.name %></h1>
-<p><%= @user.email %></p>
+<p>Email: <%= @user.email %></p>
+<%= link_to 'Edit', edit_user_registration_path %> |
+<%= link_to 'List of Users', users_path %>
+<h3><%= @user.name %>'s Subdomains</h3>
+<table>
+<% @user.subdomains.each do |subdomain| %>
+  <tr>
+    <td><%= link_to subdomain.name, subdomain %></td>
+    <td><%= link_to 'Edit', edit_subdomain_path(subdomain) %></td>
+    <td><%= link_to 'Destroy', subdomain, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
 <br />
-<p><%= link_to 'Edit', edit_user_registration_path %></p>
-<p><%= link_to 'List of Users', users_path %></p>
+<%= link_to "Add New Subdomain", new_user_subdomain_path(@user) %>

@@ -1,0 +1,3 @@
+<h1><%= @subdomain.name %></h1>
+<p>Belongs to: <%= link_to @subdomain.user.name, user_url(@subdomain.user) %></p>
+<%= link_to 'Edit', edit_subdomain_path(@subdomain) %>

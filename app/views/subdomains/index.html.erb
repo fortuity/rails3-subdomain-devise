@@ -1,0 +1,11 @@
+<h1>Subdomains</h1>
+<table>
+<% @subdomains.each do |subdomain| %>
+  <tr>
+    <td><%= link_to subdomain.name, subdomain %></td>
+    <td>(belongs to <%= link_to subdomain.user.name, user_url(subdomain.user) %>)</td>
+    <td><%= link_to 'Edit', edit_subdomain_path(subdomain) %></td>
+    <td><%= link_to 'Destroy', subdomain, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
