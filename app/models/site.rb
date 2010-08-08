@@ -1,0 +1,2 @@
+class Site < Subdomain
+end
