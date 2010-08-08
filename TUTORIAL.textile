@@ -370,7 +370,11 @@ h3. Create a Site Model
 
 We'll create a Site model as a subclass of the Subdomain model so any visitor can view a subdomain-hosted site. The Site is a simple stub in this application. It can be customized for additional functionality (for example, implementation as a blog).
 
-The Site model is very simple so there's no need to use a generator. Just create a file *app/models/site.rb* containing:
+The Site model is very simple so there's no need to use a generator. Just create a file *app/models/site.rb*:
+
+@$ touch app/models/site.rb@
+
+containing:
 
 <pre>
 class Site < Subdomain
