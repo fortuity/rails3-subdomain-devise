@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rails3SubdomainDevise</title>
+  <title>Rails3-Subdomain-Devise</title>
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= yield %>
-
+  <ul class="hmenu">
+    <%= render 'devise/menu/registration_items' %>
+    <%= render 'devise/menu/login_items' %>
+  </ul>
+  <p style="color: green"><%= notice %></p>
+  <p style="color: red"><%= alert %></p>
+  <%= yield %>
 </body>
 </html>
