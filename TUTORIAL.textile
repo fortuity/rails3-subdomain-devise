@@ -945,7 +945,7 @@ Edit the file *app/views/users/show.html.erb* to look like this:
     <td><%= link_to subdomain.name, subdomain %></td>
     <td><%= link_to 'Edit', edit_subdomain_path(subdomain) %></td>
     <td><%= link_to 'Destroy', subdomain, :confirm => 'Are you sure?', :method => :delete %></td>
-    <td><%= link_to "Visit #{site_url(:subdomain => subdomain.name)}", site_url(:subdomain => subdomain.name) %></td>
+    <td><%= link_to "Visit #{root_url(:subdomain => subdomain.name)}", root_url(:subdomain => subdomain.name) %></td>
   </tr>
 <% end %>
 </table>
