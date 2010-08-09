@@ -8,7 +8,7 @@ and tweet some praise. I'd love to know you were helped out by what I've put tog
 
 Any issues? Please create an "Issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub.
 
-h1. "Building It" Tutorial
+h2. "Building It" Tutorial
 
 A complete walkthrough tutorial is available on the GitHub wiki:
 
