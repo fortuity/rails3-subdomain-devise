@@ -2,10 +2,6 @@ h1. Rails3-Subdomain-Devise
 
 Use this project as a starting point for a Rails 3 application that uses subdomains and authentication. User management and authentication is implemented using "Devise":http://github.com/plataformatec/devise.
 
-*Note:* The current implementation is limited by an apparent unresolved issue with the Rails 3 release candidate. Session data for each visitor is not maintained between the main site and subdomains. This means that a visitor who logs into the main site will not be logged in on the subdomain-hosted sites. Additionally, flash notifications are lost when moving from the main site to subdomain-hosted sites.
-
-I am releasing the current implementation to attempt to identify and clarify the problem. Please create an "issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub if you have information about this problem.
-
 h1. Tutorial
 
 This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you're advised to look for an introduction to Rails elsewhere. Refer to the "Rails Guides":http://guides.rails.info/ site for help if you are a beginner.
@@ -1057,17 +1053,29 @@ Rails3SubdomainDevise::Application.config.session_store :cookie_store, :key => '
 
 Alternatively, we can use the domain name of the deployed application (with a prepended dot), such as @:domain => ".mysite.com"@. However, by using the parameter @:domain => :all@ we don't have to hardcode the domain name in the app and we can test the app on our localhost machine.
 
-h4. Issues With Cookies in the Rails 3 Release Candidate
+h4. Issues With the Rails 3 Release Candidate, Cookies, and Subdomains
 
 The Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/sesion_store.rb*.
 
-Using @:domain => :all@ gives us the error "ActionController::InvalidAuthenticityToken in Devise/sessionsController#create" when we visit "http://lvh.me:3000/":http://lvh.me:3000/ and attempt to log in. This is not an issue with Devise. Creating and submitting any form generates the "ActionController::InvalidAuthenticityToken" error.
+Before investigating this issue, clear all cookies from your browser.
 
-*Note:* Using @:domain => '.lvh.me'@ doesn't work. It won't allow us to maintain sessions across subdomains. Looks like "an open bug":https://rails.lighthouseapp.com/projects/8994/tickets/5147-the-all-domain-option-for-the-cookie-session-store-doesnt-allow-non-standard-tlds-like-local-or-couk in the Rails 3 release candidate.
+Setting @:domain => :all@ gives us an error "ActionController::InvalidAuthenticityToken in Devise/sessionsController#create" when we visit "http://lvh.me:3000/":http://lvh.me:3000/ and attempt to log in. This is an issue with the Rails 3 release candidate, not with Devise.
 
-If this worked properly, we could say:
+To demonstrate that this is an issue with the Rails 3 release candidate, we can create another form:
 
-"Before testing the application, remove cookies for this app from your browser. Restart and test the application and you will see that sessions are maintained across subdomains."
+@rails generate scaffold Widget name:string@
+
+Clear all cookies and restart the server. Setting @:domain => :all@ and submitting a form to create a Widget generates the "ActionController::InvalidAuthenticityToken" error. If we examine cookies, we can see none are set for this domain.
+
+Compare this with setting @:domain => ".lvh.me"@. Clear all cookies and restart the server. Submitting a form to create a Widget does not generate an error. Logging in with Devise does not generate an error. And we can visit a subdomain-hosted site such as "http://foo.lvh.me:3000/":http://foo.lvh.me:3000/ and the @current_user@ remains available in the session. If we examine cookies, we'll see a session cookie is present for the domain ".lvh.me".
+
+In conclusion, the Rails 3 release candidate works as expected with the setting @:domain => ".lvh.me"@ but not @:domain => :all@.
+
+*Note:* Is this related to "an open bug":https://rails.lighthouseapp.com/projects/8994/tickets/5147-the-all-domain-option-for-the-cookie-session-store-doesnt-allow-non-standard-tlds-like-local-or-couk in the Rails 3 release candidate?
+
+h4. Workaround
+
+Until the issue is resolved with Rails 3, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
 
 h2. Conclusion
 
