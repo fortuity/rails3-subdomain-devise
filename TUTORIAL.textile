@@ -1005,9 +1005,9 @@ The application has a significant limitation as implemented so far. A user can l
 
 h3. Examine the Issue
 
-You can see this limitation by modifying the following file to look like this:
+You can see this limitation by displaying the @current_user@ on each page.
 
-*app/views/devise/menu/_login_items.html.erb* 
+Modify the file *app/views/devise/menu/_login_items.html.erb* to look like this:
 
 <pre>
 <% if user_signed_in? %>
@@ -1029,7 +1029,21 @@ You can see this limitation by modifying the following file to look like this:
 </li>
 </pre>
 
-Test the app by logging in to the main site and then visiting a subdomain-hosted site. You'll see the user login is lost when visiting the subdomain-hosted site. If you examine the browser's cookies, you will see that a separate session is stored for each different subdomain you've visited.
+When you first visit the main site, a cookie is set to maintain the session. When you log in, the @current_user@ value is set and will be displayed on each page. If you visit a subdomain-hosted page, a new session is created, a new cookie is set (corresponding to the subdomain hostname), and no @current_user@ value is present.
+
+Test the app by logging in to the main site and then visiting a subdomain-hosted site. You'll see the user login is lost when visiting the subdomain-hosted site. 
+
+If you examine the browser's cookies, you will see that a separate session is stored for each different subdomain you've visited. 
+
+h4. Troubleshooting Cookies
+
+If you're using Firefox as your web browser, you can use the "Firecookie":https://addons.mozilla.org/en-US/firefox/addon/6683/ extension for Firebug to examine and remove cookies.
+
+If you remove cookies for the site, you can visit any pages that don't require session data. But as soon as you try to login (after submitting the login form), you will see an error:
+
+@ActionController::InvalidAuthenticityToken in Devise/sessionsController#create@
+
+The error arises because the authenticity token used by the "protect_from_forgery" feature (in the application controller) is stored in session data which requires a cookie.
 
 h3. Allow Cookies To Be Shared Across Subdomains
 
@@ -1043,7 +1057,11 @@ Rails3SubdomainDevise::Application.config.session_store :cookie_store, :key => '
 
 Alternatively, we can use the domain name of the deployed application (with a prepended dot), such as @:domain => ".mysite.com"@. However, by using the parameter @:domain => :all@ we don't have to hardcode the domain name in the app and we can test the app on our localhost machine.
 
-*Note:* Using @:domain => :all@ gives us the error "ActionController::InvalidAuthenticityToken in Devise/sessionsController#create" when we attempt to log in. 
+h4. Issues With Cookies in the Rails 3 Release Candidate
+
+The Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/sesion_store.rb*.
+
+Using @:domain => :all@ gives us the error "ActionController::InvalidAuthenticityToken in Devise/sessionsController#create" when we visit "http://lvh.me:3000/":http://lvh.me:3000/ and attempt to log in. This is not an issue with Devise. Creating and submitting any form generates the "ActionController::InvalidAuthenticityToken" error.
 
 *Note:* Using @:domain => '.lvh.me'@ doesn't work. It won't allow us to maintain sessions across subdomains. Looks like "an open bug":https://rails.lighthouseapp.com/projects/8994/tickets/5147-the-all-domain-option-for-the-cookie-session-store-doesnt-allow-non-standard-tlds-like-local-or-couk in the Rails 3 release candidate.
 
