@@ -200,7 +200,11 @@ If you add functionality to this application, create an alternative implementati
 
 h2. Similar Applications
 
-For a simple Devise example using SQLite for Rails 2.3, see "plataformatec/devise_example":http://github.com/plataformatec/devise_example.
+For a simple Devise example (without subdomains) for Rails 2.3, see "plataformatec/devise_example":http://github.com/plataformatec/devise_example.
+
+For an example of Devise using subdomains for Rails 2.3, see "fortuity/subdomain-authentication":http://github.com/fortuity/subdomain-authentication/.
+
+For a Rails 3 app using Devise and Mongoid (without subdomains), see "fortuity/rails3-mongoid-devise":http://github.com/fortuity/rails3-mongoid-devise/.
 
 h2. Credits
 
