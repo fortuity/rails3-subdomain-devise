@@ -61,21 +61,6 @@ You can download the app ("clone the repository") with the command
 
 The source code is managed with Git (a version control system) and hosted at GitHub. You'll need Git on your machine (install it from "http://git-scm.com/":http://git-scm.com/).
 
-h2. Getting Started
-
-h3. Configure Email
-
-Configure email by modifying
-
-*config/initializers/devise.rb*
-
-and setting the return email address for emails sent from the application.
-
-You may need to set values for your mailhost in
-
-*config/environments/development.rb*
-*config/environments/production.rb*
-
 h2. Set Up Gems
 
 h3. About Required Gems
@@ -101,7 +86,20 @@ You can check which gems are installed on your computer with:
 
 Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.
 
-h2. Set Up Authentication
+h2. Getting Started
+
+h3. Configure Email
+
+Configure email by modifying
+
+*config/initializers/devise.rb*
+
+and setting the return email address for emails sent from the application.
+
+You may need to set values for your mailhost in
+
+*config/environments/development.rb*
+*config/environments/production.rb*
 
 h3. Set Up Configuration for Devise
 
