@@ -80,11 +80,9 @@ Install the required gems on your computer:
 
 @$ bundle install@
 
-You can check which gems are installed on your computer with:
+If you need to troubleshoot, you can check which gems are installed on your computer with:
 
 @$ gem list --local@
-
-Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.
 
 h2. Getting Started
 
@@ -150,7 +148,7 @@ h2. Test the App
 
 You can check that your app runs properly by entering the command
 
-@$ rails server@
+@$ rails server@ (or, abbreviated: @$ rails s@)
 
 If you launch the application, it will be running at "http://localhost:3000/":http://localhost:3000/. However, unless you've made some configuration changes to your computer, you won't be able to resolve an address that uses a subdomain, such as "http://foo.localhost:3000/":http://foo.localhost:3000/. There are several complex solutions to this problem. You could set up your own domain name server on your localhost and create an A entry to catch all subdomains. You could modify your */etc/hosts* file (but it won't accommodate dynamically created subdomains). You can create a "proxy auto-config (PAC)":http://en.wikipedia.org/wiki/Proxy_auto-config file and set it up as the proxy in your web browser preferences. There's a far simpler solution that does not require reconfiguring your computer or web browser preferences. The developer Levi Cook registered a domain, "lvh.me":http://lvh.me:3000/ (short for: local virtual host me), that resolves to the localhost IP address 127.0.0.1 and supports wildcards (accommodating dynamically created subdomains). See "Tim Pope's blog post":http://tbaggery.com/2010/03/04/smack-a-ho-st.html for a NSFW alternative.
 
@@ -214,7 +212,9 @@ Is the app useful to you? Follow me on Twitter:
 "http://twitter.com/danielkehoe":http://twitter.com/danielkehoe
 and tweet some praise. I'd love to know you were helped out by what I've put together.
 
-Any issues? Please create an "Issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub.
+h4. Contributors
+
+A big thank you to contributor Fred Schoeneman for improving the tutorial.
 
 h2. License
 
