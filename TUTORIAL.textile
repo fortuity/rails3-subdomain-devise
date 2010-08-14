@@ -98,7 +98,7 @@ You can check your commit status at any time with:
 
 At each stage of completion, you should check your code into your local repository:
 
-@$ git commit -a -m "some helpful comment"@
+@$ git commit -am "some helpful comment"@
 
 and then push it to the remote repository:
 
@@ -147,17 +147,19 @@ Install the required gems on your computer:
 
 @$ bundle install@
 
-You can check which gems are installed on your computer with:
+If you need to troubleshoot, you can check which gems are installed on your computer with:
 
 @$ gem list --local@
-
-Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.
 
 h3. Test the App
 
 You can check that your app runs properly by entering the command
 
 @$ rails server@
+
+Or you can use the shortcut:
+
+@$ rails s@
 
 To see your application in action, open a browser window and navigate to "http://localhost:3000/":http://localhost:3000. You should see the Rails default information page.
 
@@ -437,7 +439,7 @@ Add the following code to each file:
   <%= f.text_field :name %></p>
 </pre>
 
-*app/views/registrations/new.html.haml*
+*app/views/devise/registrations/new.html.erb*
 
 <pre>
   <p><%= f.label :name %><br />
@@ -837,7 +839,7 @@ end
 
 Add the following code to the file:
 
-*app/views/sites/show.html.haml*
+*app/views/sites/show.html.erb*
 
 <pre>
 <h1>Site: <%= @site.name %></h1>
@@ -917,7 +919,7 @@ To provide navigation between sites hosted on the subdomains and the main site, 
 
 To add links from a subdomain-hosted site to the main site, modify the code in the file:
 
-*app/views/sites/show.html.haml*
+*app/views/sites/show.html.erb*
 
 <pre>
 <h1>Site: <%= @site.name %></h1>
