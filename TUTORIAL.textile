@@ -1091,4 +1091,6 @@ Was this useful to you? Follow me on Twitter:
 "http://twitter.com/danielkehoe":http://twitter.com/danielkehoe
 and tweet some praise. I'd love to know you were helped out by the tutorial.
 
-Any issues? Please create an "issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub.
+h4. Contributors
+
+A big thank you to contributor Fred Schoeneman for improving the tutorial.
