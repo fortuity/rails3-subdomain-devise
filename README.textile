@@ -65,7 +65,7 @@ If you wish to "change the recipe" to generate the app with your own customized 
 
 h2. Downloading the Example
 
-You can download the app ("clone the repository") with the command
+I recommend "Generating the Application" as described above. If that doesn't work, or you simply wish to examine the example code, you can download the app ("clone the repository") with the command
 
 @$ git clone git(at)github.com:fortuity/rails3-subdomain-devise.git@
 
