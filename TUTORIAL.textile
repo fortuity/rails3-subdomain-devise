@@ -39,7 +39,19 @@ Check that appropriate versions of Ruby and Rails are installed in your developm
 
 If you intend to deploy to "Heroku":http://heroku.com/, note that Heroku supports Ruby version 1.8.7 but not Ruby version 1.9.2 (as of 7 August 2010).
 
+h2. Generating the Application
+
+You can work through this tutorial using copy-and-paste to create your application. Alternatively, you can generate a new Rails app:
+
+@$ rails new app_name -m http://github.com/fortuity/rails3-subdomain-devise/raw/master/template.rb@
+
+This creates a new Rails app (with the @app_name@ you provide) on your computer. It includes everything in the example app as described here. Plus it offers you the option of setting up your view files using the Haml templating language.
+
+If you wish to "change the recipe" to generate the app with your own customized options, you can copy and edit the file *template.rb*.
+
 h2. Create the Rails Application
+
+If you wish work through this tutorial using copy-and-paste, start by creating a new Rails app.
 
 Open a terminal, navigate to a folder where you have rights to create files, and type:
 
@@ -1047,7 +1059,7 @@ h3. Allow Cookies To Be Shared Across Subdomains
 
 To maintain sessions between the main site and subdomain-hosted sites, modify the configuration file to add the parameter @:domain => :all@:
 
-*config/initializers/sesion_store.rb*
+*config/initializers/session_store.rb*
 
 <pre>
 Rails3SubdomainDevise::Application.config.session_store :cookie_store, :key => '_rails3-subdomain-devise_session', :domain => :all
@@ -1057,7 +1069,7 @@ Alternatively, we can use the domain name of the deployed application (with a pr
 
 h4. Issues With the Rails 3 Release Candidate, Cookies, and Subdomains
 
-The Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/sesion_store.rb*.
+The Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/session_store.rb*.
 
 Before investigating this issue, clear all cookies from your browser.
 

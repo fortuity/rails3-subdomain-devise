@@ -53,6 +53,16 @@ Check that appropriate versions of Ruby and Rails are installed in your developm
 
 If you intend to deploy to "Heroku":http://heroku.com/, note that Heroku supports Ruby version 1.8.7 but not Ruby version 1.9.2 (as of 7 August 2010).
 
+h2. Generating the Application
+
+To get started with a new Rails application based on this example, you can generate a new Rails app:
+
+@$ rails new app_name -m http://github.com/fortuity/rails3-subdomain-devise/raw/master/template.rb@
+
+This creates a new Rails app (with the @app_name@ you provide) on your computer. It includes everything in the example app (as described in the "tutorial":http://wiki.github.com/fortuity/rails3-subdomain-devise/tutorial-walkthrough). Plus it offers you the option of setting up your view files using the Haml templating language.
+
+If you wish to "change the recipe" to generate the app with your own customized options, you can copy and edit the file *template.rb*.
+
 h2. Downloading the Example
 
 You can download the app ("clone the repository") with the command
@@ -171,7 +181,7 @@ You can use the Site model, controller, and views as a beginning point for custo
 
 h2. Issues
 
-See the "Tutorial":http://wiki.github.com/fortuity/rails3-subdomain-devise/tutorial-walkthrough for a detailed description of an issue with the Rails 3 release candidate, cookies, and subdomains. Specifically, the Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/sesion_store.rb*. Using the parameter @:domain => :all@ allows us to avoid hardcoding the domain name in the app, making it possible to test the app on our localhost machine and deploy it without changes. Until the issue is resolved with Rails 3, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
+See the "Tutorial":http://wiki.github.com/fortuity/rails3-subdomain-devise/tutorial-walkthrough for a detailed description of an issue with the Rails 3 release candidate, cookies, and subdomains. Specifically, the Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/session_store.rb*. Using the parameter @:domain => :all@ allows us to avoid hardcoding the domain name in the app, making it possible to test the app on our localhost machine and deploy it without changes. Until the issue is resolved with Rails 3, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
 
 h2. Testing
 
