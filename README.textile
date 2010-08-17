@@ -181,7 +181,16 @@ You can use the Site model, controller, and views as a beginning point for custo
 
 h2. Issues
 
-See the "Tutorial":http://wiki.github.com/fortuity/rails3-subdomain-devise/tutorial-walkthrough for a detailed description of an issue with the Rails 3 release candidate, cookies, and subdomains. Specifically, the Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/session_store.rb*. Using the parameter @:domain => :all@ allows us to avoid hardcoding the domain name in the app, making it possible to test the app on our localhost machine and deploy it without changes. Until the issue is resolved with Rails 3, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
+See the "Tutorial":http://wiki.github.com/fortuity/rails3-subdomain-devise/tutorial-walkthrough for a detailed description of an issue with the Rails 3 release candidate, cookies, and subdomains. Specifically, the Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/session_store.rb*. Using the parameter @:domain => :all@ allows us to avoid hardcoding the domain name in the app, making it possible to test the app on our localhost machine and deploy it without changes. As a workaround, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
+
+This issue is resolved with the Rails 3 master on GitHub. See "commit fd78bb72704554737117":http://github.com/rails/rails/commit/fd78bb727045547371179428886c9b262d66091d by Bryce Thornton. You can install the Rails 3 master from GitHub by changing your Gemfile and running @bundle install@.
+
+<pre>
+gem 'rails', :git => 'git://github.com/rails/rails.git' 
+#gem 'rails', '3.0.0.rc'
+</pre>
+
+After you run @bundle install@ you can should see the latest commit number from the master Rails repo in the *Gemfile.lock* file.
 
 h2. Testing
 

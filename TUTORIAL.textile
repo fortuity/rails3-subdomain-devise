@@ -1085,11 +1085,18 @@ Compare this with setting @:domain => ".lvh.me"@. Clear all cookies and restart 
 
 In conclusion, the Rails 3 release candidate works as expected with the setting @:domain => ".lvh.me"@ but not @:domain => :all@.
 
-*Note:* Is this related to "an open bug":https://rails.lighthouseapp.com/projects/8994/tickets/5147-the-all-domain-option-for-the-cookie-session-store-doesnt-allow-non-standard-tlds-like-local-or-couk in the Rails 3 release candidate?
+*Workaround:* As a workaround, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
 
-h4. Workaround
+h4. Issue Resolved in Rails 3 Master
 
-Until the issue is resolved with Rails 3, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
+This issue is resolved with the Rails 3 master on GitHub. See "commit fd78bb72704554737117":http://github.com/rails/rails/commit/fd78bb727045547371179428886c9b262d66091d by Bryce Thornton. You can install the Rails 3 master from GitHub by changing your Gemfile and running @bundle install@.
+
+<pre>
+gem 'rails', :git => 'git://github.com/rails/rails.git' 
+#gem 'rails', '3.0.0.rc'
+</pre>
+
+After you run @bundle install@ you can should see the latest commit number from the master Rails repo in the *Gemfile.lock* file.
 
 h2. Conclusion
 

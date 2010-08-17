@@ -750,7 +750,7 @@ end
 run 'rake db:seed'
 
 puts "allow cookies to be shared across subdomains"
-inject_into_file 'config/initializers/session_store.rb', ":domain => '.lvh.me', ", :after => ":cookie_store, "
+inject_into_file 'config/initializers/session_store.rb', ":domain => :all, ", :after => ":cookie_store, "
 
 puts "checking everything into git..."
 git :add => '.'
