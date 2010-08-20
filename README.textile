@@ -28,7 +28,11 @@ This example implements "blog-style subdomains in Rails." The example is similar
 
 h3. What Is Not Implemented
 
-Another use of subdomains is often called "Basecamp-style subdomains in Rails." Visitors to the main site can create a user account which is then hosted at a subdomain that matches their user name. Each user has only one subdomain and when they log in, all their activity is confined to their subdomain. A user's home page and account info is accessed only through the subdomain that matches their user name. This approach is NOT implemented in this application (if you build an example of this, let me know and I will add a link here).
+Another use of subdomains is often called "Basecamp-style subdomains in Rails." Visitors to the main site can create a user account which is then hosted at a subdomain that matches their user name. Each user has only one subdomain and when they log in, all their activity is confined to their subdomain. A user's home page and account info is accessed only through the subdomain that matches their user name. For an example of "Basecamp-style subdomains in Rails," see:
+
+"Steve Alex's Basecamp-style fork":http://github.com/salex/rails3-subdomain-devise.
+
+(Got your own? Contact me and I will add it here.)
 
 No testing (RSpec or otherwise) is implemented. This app only serves to demonstrate Devise working with subdomains on Rails 3.
 
@@ -219,9 +223,13 @@ h2. Similar Applications
 
 For a simple Devise example (without subdomains) for Rails 2.3, see "plataformatec/devise_example":http://github.com/plataformatec/devise_example.
 
-For an example of Devise using subdomains for Rails 2.3, see "fortuity/subdomain-authentication":http://github.com/fortuity/subdomain-authentication/.
+For an example of Devise using subdomains for Rails 2.3, see "Subdomain authentication with Rails 2.3":http://github.com/fortuity/subdomain-authentication/.
 
-For a Rails 3 app using Devise and Mongoid (without subdomains), see "fortuity/rails3-mongoid-devise":http://github.com/fortuity/rails3-mongoid-devise/.
+For a Rails 3 app using Devise and Mongoid (without subdomains), see "Rails3 Authentication with Mongoid and Devise":http://github.com/fortuity/rails3-mongoid-devise/.
+
+For an example of "Basecamp-style subdomains in Rails 3," see "Steve Alex's Basecamp-style fork":http://github.com/salex/rails3-subdomain-devise.
+
+(Got a suggestion? Contact me and I will add it here.)
 
 h2. Credits
 
