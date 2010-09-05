@@ -38,12 +38,12 @@ No testing (RSpec or otherwise) is implemented. This app only serves to demonstr
 
 h2. Assumptions
 
-This tutorial is based on Rails 3 and Devise 1.1.1.
+This tutorial is based on Rails 3 and Devise 1.1.2.
 
 Before beginning this tutorial, you need to install 
 
 * The Ruby language (version 1.8.7 or 1.9.2)
-* Rails (version 3 release candidate or newer)
+* Rails (version 3.0.0)
 * A working installation of SQLite (preferred), MySQL, or PostgreSQL
 
 I recommend installing rvm, the "Ruby Version Manager":http://rvm.beginrescueend.com/, to manage multiple versions of Rails if you have a mix of Rails 3 and Rails 2 applications.
@@ -55,7 +55,7 @@ Check that appropriate versions of Ruby and Rails are installed in your developm
 @$ ruby -v@
 @$ rails -v@
 
-If you intend to deploy to "Heroku":http://heroku.com/, note that Heroku supports Ruby version 1.8.7 but not Ruby version 1.9.2 (as of 7 August 2010).
+If you intend to deploy to "Heroku":http://heroku.com/, note that Heroku supports Ruby version 1.8.7 but not Ruby version 1.9.2 (as of 5 September 2010).
 
 h2. Generating the Application
 
@@ -81,10 +81,10 @@ h3. About Required Gems
 
 The application uses the following gems:
 
-* rails (version 3.0.0.rc)
+* rails (version 3.0.0)
 * sqlite3-ruby
-* devise (version 1.1.1)
-* friendly_id
+* devise (version 1.1.2)
+* friendly_id (version 3.1.6)
 
 If you wish to deploy to Heroku, you must include the heroku gem.
 
@@ -185,16 +185,7 @@ You can use the Site model, controller, and views as a beginning point for custo
 
 h2. Issues
 
-See the "Tutorial":http://wiki.github.com/fortuity/rails3-subdomain-devise/tutorial-walkthrough for a detailed description of an issue with the Rails 3 release candidate, cookies, and subdomains. Specifically, the Rails 3 release candidate does not behave as expected when @:domain => :all@ is set in *config/initializers/session_store.rb*. Using the parameter @:domain => :all@ allows us to avoid hardcoding the domain name in the app, making it possible to test the app on our localhost machine and deploy it without changes. As a workaround, use @:domain => ".lvh.me"@ for development and then change it when you deploy it elsewhere.
-
-This issue is resolved with the Rails 3 master on GitHub. See "commit fd78bb72704554737117":http://github.com/rails/rails/commit/fd78bb727045547371179428886c9b262d66091d by Bryce Thornton. You can install the Rails 3 master from GitHub by changing your Gemfile and running @bundle install@.
-
-<pre>
-gem 'rails', :git => 'git://github.com/rails/rails.git' 
-#gem 'rails', '3.0.0.rc'
-</pre>
-
-After you run @bundle install@ you can should see the latest commit number from the master Rails repo in the *Gemfile.lock* file.
+Check "Issues":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub for open issues.
 
 h2. Testing
 

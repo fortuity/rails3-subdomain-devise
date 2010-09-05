@@ -47,24 +47,24 @@ gsub_file 'public/robots.txt', /# Disallow/, 'Disallow'
 puts "setting up the Gemfile..."
 run 'rm Gemfile'
 create_file 'Gemfile', "source 'http://rubygems.org'\n"
-gem 'rails', '3.0.0.rc'
+gem 'rails', '3.0.0'
 gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'devise', '1.1.1'
-gem 'friendly_id', '3.1.1.1'
+gem 'devise', '1.1.2'
+gem 'friendly_id', '3.1.6'
 
 if heroku_flag
   puts "adding Heroku gem to the Gemfile..."
-  gem 'heroku', '1.9.13', :group => :development
+  gem 'heroku', '1.9.14', :group => :development
 end
 
 if haml_flag
   puts "setting up Gemfile for Haml..."
   append_file 'Gemfile', "\n# Bundle gems needed for Haml\n"
-  gem 'haml', '3.0.14'
-  gem "rails3-generators", :group => :development
+  gem 'haml', '3.0.18'
+  gem 'rails3-generators', '0.13.0', :group => :development
   # the folowing gems are used to generate Devise views for Haml
-  gem "hpricot", :group => :development
-  gem "ruby_parser", :group => :development
+  gem 'hpricot', '0.8.2', :group => :development
+  gem 'ruby_parser', '2.0.5', :group => :development
 end
 
 puts "installing gems (takes a few minutes!)..."
