@@ -232,7 +232,8 @@ and tweet some praise. I'd love to know you were helped out by what I've put tog
 
 h4. Contributors
 
-A big thank you to contributor Fred Schoeneman for improving the tutorial.
+Thank you to contributor Fred Schoeneman for improving the tutorial.
+Thank you to contributor Charlie Ussery for suggesting how to ignore the "www" subdomain.
 
 h2. License
 

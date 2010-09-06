@@ -130,7 +130,7 @@ The application uses the following gems:
 
 * rails (version 3.0.0)
 * sqlite3-ruby
-* devise (version 1.1.3)
+* devise (version 1.1.2)
 * friendly_id (version 3.1.6)
 
 The SQLite3 gem is used for the database. You can substitute a different database if you wish.
@@ -1013,7 +1013,25 @@ end
 
 h2. Ignore a "www" Subdomain
 
-In his screencast "Subdomains in Rails 3":http://railscasts.com/episodes/221-subdomains-in-rails-3, Ryan Bates shows how to create a routing constraint that will redirect a "www" URL to the main home page. Unfortunately the implementation doesn't work in the Rails 3 release candidate. If you have a solution or workaround, please open an "issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub and I will update this example to include it.
+At this point, if we visit "http://www.lvh.me:3000/":http://www.lvh.me:3000/ our application will look for a site with the subdomain "www" which doesn't exist. Instead this should redirect to the main home page.
+
+In his screencast "Subdomains in Rails 3":http://railscasts.com/episodes/221-subdomains-in-rails-3, Ryan Bates shows how to create a routing constraint that will redirect a "www" URL to the main home page. His solution requires writing an auxiliary class but there's a simpler solution.
+
+Here's how to create a routing constraint that will redirect a "www" URL to the main home page.
+
+Edit the file *config/routes.rb* to look like this:
+
+<pre>
+devise_for :users
+resources :users, :only => [:index, :show] do
+  resources :subdomains, :shallow => true
+end
+match '/' => 'home#index', :constraints => { :subdomain => 'www' }
+match '/' => 'sites#show', :constraints => { :subdomain => /.+/ }
+root :to => "home#index"
+</pre>
+
+This will intercept the "www" subdomain first, then the @limit_subdomain_access@ method in the ApplicationController will redirect to root, effectively getting rid of the "www". Note that you will need to add your own code to prevent users from creating a subdomain called "www".
 
 h2. Maintaining Sessions Across Subdomains
 
@@ -1087,4 +1105,5 @@ and tweet some praise. I'd love to know you were helped out by the tutorial.
 
 h4. Contributors
 
-A big thank you to contributor Fred Schoeneman for improving the tutorial.
+Thank you to contributor Fred Schoeneman for improving the tutorial.
+Thank you to contributor Charlie Ussery for suggesting how to ignore the "www" subdomain.

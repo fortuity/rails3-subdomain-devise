@@ -724,6 +724,7 @@ inject_into_file 'config/routes.rb', :after => "devise_for :users\n" do
   resources :users, :only => [:index, :show] do
     resources :subdomains, :shallow => true
   end
+  match '/' => 'home#index', :constraints => { :subdomain => 'www' }
   match '/' => 'sites#show', :constraints => { :subdomain => /.+/ }
   root :to => "home#index"
 RUBY

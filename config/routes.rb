@@ -3,6 +3,7 @@ Rails3SubdomainDevise::Application.routes.draw do
   resources :users, :only => [:index, :show] do
     resources :subdomains, :shallow => true
   end
+  match '/' => 'home#index', :constraints => { :subdomain => 'www' }
   match '/' => 'sites#show', :constraints => { :subdomain => /.+/ }
   root :to => "home#index"
 
