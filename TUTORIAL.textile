@@ -156,7 +156,7 @@ If you wish to deploy to Heroku, you will need to include the following gem:
 
 <pre>
 # uncomment the next line if you wish to deploy to Heroku
-# gem 'heroku', '1.9.14', :group => :development
+# gem 'heroku', '1.10.2', :group => :development
 </pre>
 
 h3. Install the Gems

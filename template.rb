@@ -54,7 +54,7 @@ gem 'friendly_id', '3.1.6'
 
 if heroku_flag
   puts "adding Heroku gem to the Gemfile..."
-  gem 'heroku', '1.9.14', :group => :development
+  gem 'heroku', '1.10.2', :group => :development
 end
 
 if haml_flag
