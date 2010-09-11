@@ -1091,6 +1091,86 @@ Rails3SubdomainDevise::Application.config.session_store :cookie_store, :key => '
 
 Alternatively, we can use the domain name of the deployed application (with a prepended dot), such as @:domain => ".mysite.com"@. However, by using the parameter @:domain => :all@ we don't have to hardcode the domain name in the app and we can test the app on our localhost machine.
 
+h2. Deploying to Heroku
+
+h3. Set Up Heroku
+
+For your convenience, here are instructions for deploying your app to Heroku. Heroku provides low cost, easily configured Rails application hosting.
+
+To deploy this app to Heroku, you must have a Heroku account. If you need to obtain one, visit "http://heroku.com/":http://heroku.com/ to set up an account. 
+
+Note that Heroku supports Ruby version 1.8.7 but not Ruby version 1.9.2 (as of 5 September 2010). If you've developed the app locally using Ruby version 1.9.2, you may wish to use Ruby Version Manager (rvm) to switch to Ruby version 1.8.7 and test the app before deploying to Heroku.
+
+Make sure the Heroku gem is in your *Gemfile*. If it's not, add it and run
+
+@$ bundle install@
+
+to set up your gems again.
+
+If you've just created a Heroku account, add your public key immediately after installing the heroku gem so that you can use git to push or clone Heroku app repositories. See "http://docs.heroku.com/heroku-command":http://docs.heroku.com/heroku-command for details.
+
+h3. Create Your Application on Heroku
+
+Use the Heroku create command to create and name your new app> Specify the "bamboo-ree-1.8.7" stack so Heroku will allow you to use Rails 3.
+
+@$ heroku create _myapp_ --stack bamboo-ree-1.8.7@
+
+h3. Heroku Add-ons and DNS Configuration
+
+You will need the following Heroku add-ons to deploy your app using subdomains with your own custom domain:
+
+* Custom Domains (free)
+* Custom Domains + Wildcard ($5 per month)
+* Zerigo DNS Tier 1 ($7 per month)
+
+To enable the add-ons, you can use the Heroku web interface or you can enter the following commands:
+
+@$ heroku addons:add custom_domains@
+
+@$ heroku domains:add mydomain.com@
+
+@$ heroku addons:add wildcard_domains@
+
+@$ heroku domains:add *.mydomain.com@
+
+@$ heroku addons:add zerigo_dns:tier1@
+
+If you are using the Zerigo DNS service, you will need to set the nameserver with your domain registrar. It can take a few minutes (or longer) for DNS changes to propagate. When DNS is set properly, you should be able to visit *mydomain.com* or *test.mydomain.com* in your web browser and see the Heroku default page:
+
+@Heroku | Welcome to your new app!@
+
+You can check that everything has been added correctly by running:
+
+@$ heroku info --app myapp@
+
+h3. Set Up Your Application on Heroku
+
+Push your application to Heroku:
+
+@$ git push heroku master@
+
+Set up your Heroku database:
+
+@$ heroku rake db:migrate@
+
+Initialize your application database:
+
+@$ heroku rake db:seed@
+
+h3. Visit Your Site
+
+If you use the heroku command to open your default web browser to your site with
+
+@$ heroku open@
+
+or if you visit your site with "http://myapp.heroku.com/":http://myapp.heroku.com/ you'll see the error, "The page you were looking for doesn't exist." That's because your app is trying to find a subdomain "myapp" that doesn't exist. You'll need to visit the site using your own domain name, such as "http://mydomain.com/":http://mydomain.com/. Domain name service must be set properly to use the Zerigo nameservers.
+
+h3. Troubleshooting
+
+If you get errors, you can troubleshoot by reviewing the log files:
+
+@$ heroku logs@
+
 h2. Conclusion
 
 This concludes the tutorial for creating a Rails 3 web application that uses subdomains and provides user management and authentication using Devise.
