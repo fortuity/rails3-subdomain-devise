@@ -1011,6 +1011,24 @@ class SitesController < ApplicationController
 end
 </pre>
 
+h2. Using Subdomains in Emails
+
+Devise sends registration confirmations, forgotten password messages, and other email messages. These will originate from the main domain. You can modify the application so these emails originate from subdomains.
+
+Add the following code to the file *app/helpers/url_helper.rb*:
+
+<pre>
+def set_mailer_url_options
+  ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
+end
+</pre>
+
+and modify the file *app/controllers/application_controller.rb* to add:
+
+@before_filter :set_mailer_url_options@
+
+(Thanks to "Tom Howlett":http://solittlecode.com/ for this contribution.)
+
 h2. Ignore a "www" Subdomain
 
 At this point, if we visit "http://www.lvh.me:3000/":http://www.lvh.me:3000/ our application will look for a site with the subdomain "www" which doesn't exist. Instead this should redirect to the main home page.
@@ -1187,3 +1205,4 @@ h4. Contributors
 
 Thank you to contributor Fred Schoeneman for improving the tutorial.
 Thank you to contributor Charlie Ussery for suggesting how to ignore the "www" subdomain.
+Thank you to contributor Tom Howlett for suggesting how to use subdomains in Devise emails.
