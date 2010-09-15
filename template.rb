@@ -691,6 +691,10 @@ module UrlHelper
     end
     super
   end
+  
+  def set_mailer_url_options
+    ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
+  end
 end
 FILE
 end
@@ -703,6 +707,7 @@ class ApplicationController < ActionController::Base
   include UrlHelper
   protect_from_forgery
   before_filter :limit_subdomain_access
+  before_filter :set_mailer_url_options
 
   protected
 
