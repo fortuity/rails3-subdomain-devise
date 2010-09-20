@@ -51,7 +51,13 @@ You can work through this tutorial using copy-and-paste to create your applicati
 
 @$ rails new app_name -m http://github.com/fortuity/rails3-subdomain-devise/raw/master/template.rb@
 
-This creates a new Rails app (with the @app_name@ you provide) on your computer. It includes everything in the example app as described here. Plus it offers you the option of setting up your view files using the Haml templating language.
+This creates a new Rails app (with the @app_name@ you provide) on your computer. It includes everything in the example app as described here.
+
+Plus, the application generator template offers you the following options:
+
+* set up your view files using the Haml templating language
+* use jQuery instead of Prototype
+* install the heroku gem for deployment to Heroku
 
 If you wish to "change the recipe" to generate the app with your own customized options, you can copy and edit the file *template.rb*.
 

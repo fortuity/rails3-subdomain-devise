@@ -63,7 +63,13 @@ To get started with a new Rails application based on this example, you can gener
 
 @$ rails new app_name -m http://github.com/fortuity/rails3-subdomain-devise/raw/master/template.rb@
 
-This creates a new Rails app (with the @app_name@ you provide) on your computer. It includes everything in the example app (as described in the "tutorial":http://github.com/fortuity/rails3-subdomain-devise/wiki/Tutorial-%28Walkthrough%29). Plus it offers you the option of setting up your view files using the Haml templating language.
+This creates a new Rails app (with the @app_name@ you provide) on your computer. It includes everything in the example app (as described in the "tutorial":http://github.com/fortuity/rails3-subdomain-devise/wiki/Tutorial-%28Walkthrough%29).
+
+Plus, the application generator template offers you the following options:
+
+* set up your view files using the Haml templating language
+* use jQuery instead of Prototype
+* install the heroku gem for deployment to Heroku
 
 If you wish to "change the recipe" to generate the app with your own customized options, you can copy and edit the file *template.rb*.
 
@@ -86,7 +92,13 @@ The application uses the following gems:
 * devise (version 1.1.2)
 * friendly_id (version 3.1.6)
 
-If you wish to deploy to Heroku, you must include the heroku gem.
+I recommend checking for newer versions of these gems before proceeding:
+
+* "Check rubygems.org for the rails gem":http://rubygems.org/gems/rails
+* "Check rubygems.org for the devise gem":http://rubygems.org/gems/devise
+* "Check rubygems.org for the friendly_id gem":http://rubygems.org/gems/friendly_id
+
+The app has been tested with the indicated versions. If you are able to build the app with a newer gem, please create an "issue":http://github.com/fortuity/rails3-mongoid-devise/issues on GitHub and I will update the app.
 
 h3. Install the Gems
 
