@@ -143,6 +143,14 @@ The SQLite3 gem is used for the database. You can substitute a different databas
 
 The FriendlyId gem is used to give users and subdomains easily recognizable strings instead of numeric ids in URLs.
 
+I recommend checking for newer versions of these gems before proceeding:
+
+* "Check rubygems.org for the rails gem":http://rubygems.org/gems/rails
+* "Check rubygems.org for the devise gem":http://rubygems.org/gems/devise
+* "Check rubygems.org for the friendly_id gem":http://rubygems.org/gems/friendly_id
+
+The app has been tested with the indicated versions. If you are able to build the app with a newer gem, please create an "issue":http://github.com/fortuity/rails3-mongoid-devise/issues on GitHub and I will update the app.
+
 h3. Set up Your Gemfile
 
 Edit the *Gemfile* file to look like this:
