@@ -12,10 +12,20 @@
 puts "Modifying a new Rails app to set up subdomains with Devise..."
 puts "Any problems? See http://github.com/fortuity/rails3-subdomain-devise/issues"
 
+#----------------------------------------------------------------------------
+# Configure
+#----------------------------------------------------------------------------
+
 if yes?('Would you like to use the Haml template system? (yes/no)')
   haml_flag = true
 else
   haml_flag = false
+end
+
+if yes?('Would you like to use jQuery instead of Prototype? (yes/no)')
+  jquery_flag = true
+else
+  jquery_flag = false
 end
 
 if yes?('Do you want to install the Heroku gem so you can deploy to Heroku? (yes/no)')
@@ -24,6 +34,9 @@ else
   heroku_flag = false
 end
 
+#----------------------------------------------------------------------------
+# Set up git
+#----------------------------------------------------------------------------
 puts "setting up source control with 'git'..."
 # specific to Mac OS X
 append_file '.gitignore' do
@@ -33,6 +46,9 @@ git :init
 git :add => '.'
 git :commit => "-m 'Initial commit of unmodified new Rails app'"
 
+#----------------------------------------------------------------------------
+# Remove the usual cruft
+#----------------------------------------------------------------------------
 puts "removing unneeded files..."
 run 'rm public/index.html'
 run 'rm public/favicon.ico'
@@ -52,34 +68,37 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'devise', '1.1.2'
 gem 'friendly_id', '3.1.6'
 
+#----------------------------------------------------------------------------
+# Heroku Option
+#----------------------------------------------------------------------------
 if heroku_flag
   puts "adding Heroku gem to the Gemfile..."
   gem 'heroku', '1.10.2', :group => :development
 end
 
+#----------------------------------------------------------------------------
+# Haml Option
+#----------------------------------------------------------------------------
 if haml_flag
   puts "setting up Gemfile for Haml..."
   append_file 'Gemfile', "\n# Bundle gems needed for Haml\n"
   gem 'haml', '3.0.18'
-  gem 'rails3-generators', '0.13.0', :group => :development
-  # the folowing gems are used to generate Devise views for Haml
+  gem 'haml-rails', '0.2', :group => :development
+  # the following gems are used to generate Devise views for Haml
   gem 'hpricot', '0.8.2', :group => :development
   gem 'ruby_parser', '2.0.5', :group => :development
 end
 
+#----------------------------------------------------------------------------
+# jQuery Option
+#----------------------------------------------------------------------------
+if jquery_flag
+  puts "setting up Gemfile for jQuery..."
+  gem 'jquery-rails', '0.1.3'
+end
+
 puts "installing gems (takes a few minutes!)..."
 run 'bundle install'
-
-if haml_flag
-  puts "modifying 'config/application.rb' file for Haml..."
-  inject_into_file 'config/application.rb', :after => "# Configure the default encoding used in templates for Ruby 1.9.\n" do 
-<<-RUBY
-  config.generators do |g|
-      g.template_engine :haml
-    end
-RUBY
-  end
-end
 
 puts "prevent logging of passwords"
 gsub_file 'config/application.rb', /:password/, ':password, :password_confirmation'
@@ -87,6 +106,19 @@ gsub_file 'config/application.rb', /:password/, ':password, :password_confirmati
 puts "setting up a migration for use with FriendlyId..."
 run 'rails generate friendly_id'
 
+#----------------------------------------------------------------------------
+# Set up jQuery
+#----------------------------------------------------------------------------
+if jquery_flag
+  run 'rm public/javascripts/rails.js'
+  puts "replacing Prototype with jQuery"
+  # "--ui" enables optional jQuery UI
+  run 'rails generate jquery:install --ui'
+end
+
+#----------------------------------------------------------------------------
+# Set up Devise
+#----------------------------------------------------------------------------
 puts "creating 'config/initializers/devise.rb' Devise configuration file..."
 run 'rails generate devise:install'
 run 'rails generate devise:views'
@@ -139,6 +171,9 @@ end
 puts "creating a database migration to add 'name' to the User table"
 generate(:migration, "AddNameToUsers name:string")
 
+#----------------------------------------------------------------------------
+# Modify Devise views
+#----------------------------------------------------------------------------
 puts "modifying the default Devise user registration to add 'name'..."
 if haml_flag
    inject_into_file "app/views/devise/registrations/edit.html.haml", :after => "= devise_error_messages!\n" do
@@ -176,6 +211,9 @@ RUBY
    end
 end
 
+#----------------------------------------------------------------------------
+# Create a Subdomain model
+#----------------------------------------------------------------------------
 puts "creating a Subdomain model..."
 generate(:model, "Subdomain name:string user:references")
 
@@ -200,6 +238,9 @@ end
 RUBY
 end
 
+#----------------------------------------------------------------------------
+# User controller and views
+#----------------------------------------------------------------------------
 puts "generating controller and views to display users"
 generate(:controller, "users index show")
 gsub_file 'config/routes.rb', /get \"users\/index\"/, ''
@@ -292,6 +333,9 @@ FILE
   end
 end
 
+#----------------------------------------------------------------------------
+# Devise navigation
+#----------------------------------------------------------------------------
 if haml_flag
   create_file "app/views/devise/menu/_login_items.html.haml" do <<-'FILE'
 - if user_signed_in?
@@ -356,6 +400,9 @@ else
   end
 end
 
+#----------------------------------------------------------------------------
+# Generate Application Layout
+#----------------------------------------------------------------------------
 if haml_flag
   run 'rm app/views/layouts/application.html.erb'
   create_file 'app/views/layouts/application.html.haml' do <<-FILE
@@ -388,6 +435,9 @@ RUBY
   end
 end
 
+#----------------------------------------------------------------------------
+# Add Stylesheets
+#----------------------------------------------------------------------------
 create_file 'public/stylesheets/application.css' do <<-FILE
 ul.hmenu {
   list-style: none; 
@@ -401,6 +451,9 @@ ul.hmenu li {
 FILE
 end
 
+#----------------------------------------------------------------------------
+# Home Controller and View
+#----------------------------------------------------------------------------
 puts "create a home controller and view"
 generate(:controller, "home index")
 gsub_file 'config/routes.rb', /get \"home\/index\"/, ''
@@ -422,6 +475,9 @@ else
   end
 end
 
+#----------------------------------------------------------------------------
+# Subdomains Controller and View
+#----------------------------------------------------------------------------
 puts "create a controller and views to manage subdomains"
 generate(:scaffold_controller, "Subdomains")
 run 'rm app/controllers/subdomains_controller.rb'
@@ -641,6 +697,9 @@ else
   end
 end
 
+#----------------------------------------------------------------------------
+# Sites Controller and View
+#----------------------------------------------------------------------------
 puts "create a controller and views to display subdomain sites"
 generate(:controller, "Sites show")
 gsub_file 'config/routes.rb', /get \"sites\/show\"/, ''
@@ -676,6 +735,9 @@ else
   end
 end
 
+#----------------------------------------------------------------------------
+# URL helper
+#----------------------------------------------------------------------------
 puts "create a URL helper for navigation between sites"
 create_file 'app/helpers/url_helper.rb' do <<FILE
 module UrlHelper
@@ -723,6 +785,9 @@ end
 RUBY
 end
 
+#----------------------------------------------------------------------------
+# Create Routes
+#----------------------------------------------------------------------------
 puts "creating routes"
 inject_into_file 'config/routes.rb', :after => "devise_for :users\n" do
 <<-RUBY
@@ -735,6 +800,12 @@ inject_into_file 'config/routes.rb', :after => "devise_for :users\n" do
 RUBY
 end
 
+puts "allow cookies to be shared across subdomains"
+inject_into_file 'config/initializers/session_store.rb', ":domain => :all, ", :after => ":cookie_store, "
+
+#----------------------------------------------------------------------------
+# Create a default user and subdomains
+#----------------------------------------------------------------------------
 puts "create and migrate the database"
 run 'rake db:create'
 run 'rake db:migrate'
@@ -755,9 +826,9 @@ FILE
 end
 run 'rake db:seed'
 
-puts "allow cookies to be shared across subdomains"
-inject_into_file 'config/initializers/session_store.rb', ":domain => :all, ", :after => ":cookie_store, "
-
+#----------------------------------------------------------------------------
+# Finish up
+#----------------------------------------------------------------------------
 puts "checking everything into git..."
 git :add => '.'
 git :commit => "-m 'modified Rails app to use subdomains with Devise'"
