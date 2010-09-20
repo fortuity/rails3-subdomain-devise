@@ -58,6 +58,7 @@ Plus, the application generator template offers you the following options:
 * set up your view files using the Haml templating language
 * use jQuery instead of Prototype
 * install the heroku gem for deployment to Heroku
+* use Mongoid instead of Active Record for database access
 
 If you wish to "change the recipe" to generate the app with your own customized options, you can copy and edit the file *template.rb*.
 

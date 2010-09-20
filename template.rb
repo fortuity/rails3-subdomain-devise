@@ -16,6 +16,12 @@ puts "Any problems? See http://github.com/fortuity/rails3-subdomain-devise/issue
 # Configure
 #----------------------------------------------------------------------------
 
+if yes?('Would you like to use Mongoid instead of ActiveRecord for database access? (yes/no)')
+  mongoid_flag = true
+else
+  mongoid_flag = false
+end
+
 if yes?('Would you like to use the Haml template system? (yes/no)')
   haml_flag = true
 else
@@ -50,6 +56,9 @@ git :commit => "-m 'Initial commit of unmodified new Rails app'"
 # Remove the usual cruft
 #----------------------------------------------------------------------------
 puts "removing unneeded files..."
+if mongoid_flag
+  run 'rm config/database.yml'
+end
 run 'rm public/index.html'
 run 'rm public/favicon.ico'
 run 'rm public/images/rails.png'
@@ -64,9 +73,11 @@ puts "setting up the Gemfile..."
 run 'rm Gemfile'
 create_file 'Gemfile', "source 'http://rubygems.org'\n"
 gem 'rails', '3.0.0'
-gem 'sqlite3-ruby', :require => 'sqlite3'
+if !mongoid_flag
+  gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'friendly_id', '3.1.6'
+end
 gem 'devise', '1.1.2'
-gem 'friendly_id', '3.1.6'
 
 #----------------------------------------------------------------------------
 # Heroku Option
@@ -97,14 +108,74 @@ if jquery_flag
   gem 'jquery-rails', '0.1.3'
 end
 
+#----------------------------------------------------------------------------
+# Mongoid Option
+#----------------------------------------------------------------------------
+if mongoid_flag
+  puts "setting up Gemfile for Mongoid..."
+  gsub_file 'Gemfile', /gem \'sqlite3-ruby/, '# gem \'sqlite3-ruby'
+  append_file 'Gemfile', "\n# Bundle gems needed for Mongoid\n"
+  append_file 'Gemfile', "\n# waiting for Mongoid 2 beta 18 -- use the edge version for now:\n"
+  gem "mongoid", :git => 'git://github.com/mongoid/mongoid.git'
+  gem 'bson_ext', '1.0.7'
+end
+
 puts "installing gems (takes a few minutes!)..."
 run 'bundle install'
+
+#----------------------------------------------------------------------------
+# Set up Mongoid
+#----------------------------------------------------------------------------
+if mongoid_flag
+  puts "creating 'config/mongoid.yml' Mongoid configuration file..."
+  run 'rails generate mongoid:config'
+
+  puts "modifying 'config/application.rb' file for Mongoid..."
+  gsub_file 'config/application.rb', /require 'rails\/all'/ do
+<<-RUBY
+# If you are deploying to Heroku and MongoHQ,
+# you supply connection information here.
+require 'uri'
+if ENV['MONGOHQ_URL']
+  mongo_uri = URI.parse(ENV['MONGOHQ_URL'])
+  ENV['MONGOID_HOST'] = mongo_uri.host
+  ENV['MONGOID_PORT'] = mongo_uri.port.to_s
+  ENV['MONGOID_USERNAME'] = mongo_uri.user
+  ENV['MONGOID_PASSWORD'] = mongo_uri.password
+  ENV['MONGOID_DATABASE'] = mongo_uri.path.gsub('/', '')
+end
+
+require 'mongoid/railtie'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'active_resource/railtie'
+require 'rails/test_unit/railtie'
+RUBY
+  end
+end
+
+#----------------------------------------------------------------------------
+# Tweak config/application.rb for Mongoid
+#----------------------------------------------------------------------------
+if mongoid_flag
+  gsub_file 'config/application.rb', /# Configure the default encoding used in templates for Ruby 1.9./ do
+<<-RUBY
+config.generators do |g|
+      g.orm             :mongoid
+    end
+
+    # Configure the default encoding used in templates for Ruby 1.9.
+RUBY
+  end
+end
 
 puts "prevent logging of passwords"
 gsub_file 'config/application.rb', /:password/, ':password, :password_confirmation'
 
-puts "setting up a migration for use with FriendlyId..."
-run 'rails generate friendly_id'
+if !mongoid_flag
+  puts "setting up a migration for use with FriendlyId..."
+  run 'rails generate friendly_id'
+end
 
 #----------------------------------------------------------------------------
 # Set up jQuery
@@ -152,24 +223,39 @@ end
 puts "creating a User model and modifying routes for Devise..."
 run 'rails generate devise User'
 
-puts "setting up the User model"
-run 'rm app/models/user.rb'
-create_file 'app/models/user.rb' do
+puts "adding a 'name' attribute to the User model"
+if mongoid_flag
+  inject_into_file 'app/models/user.rb', :after => ":recoverable, :rememberable, :trackable, :validatable\n" do
+<<-RUBY
+  field :name
+  validates_presence_of :name
+  validates_uniqueness_of :name, :email, :case_sensitive => false
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+  key :name
+  references_many :subdomains, :dependent => :destroy
+RUBY
+  end
+else
+  run 'rm app/models/user.rb'
+  create_file 'app/models/user.rb' do
 <<-RUBY
 class User < ActiveRecord::Base
-  has_many :subdomains, :dependent => :destroy
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  has_many :subdomains, :dependent => :destroy
   validates_presence_of :name
   validates_uniqueness_of :name, :email, :case_sensitive => false
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
   has_friendly_id :name, :use_slug => true, :strip_non_ascii => true
 end
 RUBY
+  end
 end
 
-puts "creating a database migration to add 'name' to the User table"
-generate(:migration, "AddNameToUsers name:string")
+if !mongoid_flag
+  puts "creating a database migration to add 'name' to the User table"
+  generate(:migration, "AddNameToUsers name:string")
+end
 
 #----------------------------------------------------------------------------
 # Modify Devise views
@@ -215,11 +301,20 @@ end
 # Create a Subdomain model
 #----------------------------------------------------------------------------
 puts "creating a Subdomain model..."
-generate(:model, "Subdomain name:string user:references")
-
-puts "setting up the Subdomain model"
-run 'rm app/models/subdomain.rb'
-create_file 'app/models/subdomain.rb' do
+if mongoid_flag
+  generate(:model, "Subdomain name:string")
+  inject_into_file 'app/models/subdomain.rb', :after => "field :name, :type => String\n" do
+<<-RUBY
+key :name
+referenced_in :user
+validates_uniqueness_of :name, :case_sensitive => false
+validates_presence_of :name
+RUBY
+  end
+else
+  generate(:model, "Subdomain name:string user:references")
+  run 'rm app/models/subdomain.rb'
+  create_file 'app/models/subdomain.rb' do
 <<-RUBY
 class Subdomain < ActiveRecord::Base
   belongs_to :user
@@ -228,6 +323,7 @@ class Subdomain < ActiveRecord::Base
   validates_presence_of :name
 end
 RUBY
+  end
 end
 
 puts "setting up the Site model"
@@ -708,12 +804,20 @@ inject_into_file "app/controllers/sites_controller.rb", :after => "ApplicationCo
   skip_before_filter :limit_subdomain_access
 RUBY
 end
-inject_into_file "app/controllers/sites_controller.rb", :after => "def show\n" do
+if mongoid_flag
+  inject_into_file "app/controllers/sites_controller.rb", :after => "def show\n" do
+<<-RUBY
+    # this is not quite right, needs investigation, should be "Site" not "Subdomain"
+    @site = Subdomain.first(:conditions => { :name => request.subdomain })
+RUBY
+  end
+else
+  inject_into_file "app/controllers/sites_controller.rb", :after => "def show\n" do
 <<-RUBY
     @site = Site.find_by_name!(request.subdomain)
 RUBY
+  end
 end
-
 if haml_flag
   run 'rm app/views/sites/show.html.haml'
   # we have to use single-quote-style-heredoc to avoid interpolation
@@ -806,9 +910,11 @@ inject_into_file 'config/initializers/session_store.rb', ":domain => :all, ", :a
 #----------------------------------------------------------------------------
 # Create a default user and subdomains
 #----------------------------------------------------------------------------
-puts "create and migrate the database"
-run 'rake db:create'
-run 'rake db:migrate'
+if !mongoid_flag
+  puts "create and migrate the database"
+  run 'rake db:create'
+  run 'rake db:migrate'
+end
 
 puts "creating default users and subdomains"
 append_file 'db/seeds.rb' do <<-FILE
@@ -818,10 +924,14 @@ puts 'New user created: ' << user1.name
 user2 = User.create! :name => 'Other User', :email => 'otheruser@test.com', :password => 'please', :password_confirmation => 'please'
 puts 'New user created: ' << user2.name
 puts 'SETTING UP EXAMPLE SUBDOMAINS'
-subdomain1 = Subdomain.create! :name => 'foo', :user_id => user1.id
+subdomain1 = Subdomain.create! :name => 'foo'
 puts 'Created subdomain: ' << subdomain1.name
-subdomain2 = Subdomain.create! :name => 'bar', :user_id => user2.id
+subdomain2 = Subdomain.create! :name => 'bar'
 puts 'Created subdomain: ' << subdomain2.name
+user1.subdomains << subdomain1
+user1.save
+user2.subdomains << subdomain2
+user2.save
 FILE
 end
 run 'rake db:seed'
