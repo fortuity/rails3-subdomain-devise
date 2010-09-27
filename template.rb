@@ -75,16 +75,16 @@ create_file 'Gemfile', "source 'http://rubygems.org'\n"
 gem 'rails', '3.0.0'
 if !mongoid_flag
   gem 'sqlite3-ruby', :require => 'sqlite3'
-  gem 'friendly_id', '3.1.6'
+  gem 'friendly_id', '3.1.7'
 end
-gem 'devise', '1.1.2'
+gem 'devise', '1.1.3'
 
 #----------------------------------------------------------------------------
 # Heroku Option
 #----------------------------------------------------------------------------
 if heroku_flag
   puts "adding Heroku gem to the Gemfile..."
-  gem 'heroku', '1.10.2', :group => :development
+  gem 'heroku', '1.10.6', :group => :development
 end
 
 #----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ if mongoid_flag
   append_file 'Gemfile', "\n# Bundle gems needed for Mongoid\n"
   append_file 'Gemfile', "\n# waiting for Mongoid 2 beta 18 -- use the edge version for now:\n"
   gem "mongoid", :git => 'git://github.com/mongoid/mongoid.git'
-  gem 'bson_ext', '1.0.7'
+  gem 'bson_ext', '1.0.9'
 end
 
 puts "installing gems (takes a few minutes!)..."
