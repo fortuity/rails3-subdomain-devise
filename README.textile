@@ -28,9 +28,15 @@ This example implements "blog-style subdomains in Rails." The example is similar
 
 h3. What Is Not Implemented
 
-Another use of subdomains is often called "Basecamp-style subdomains in Rails." Visitors to the main site can create a user account which is then hosted at a subdomain that matches their user name. Each user has only one subdomain and when they log in, all their activity is confined to their subdomain. A user's home page and account info is accessed only through the subdomain that matches their user name. For an example of "Basecamp-style subdomains in Rails," see:
+Another use of subdomains is often called "Basecamp-style subdomains in Rails." Visitors to the main site can create a user account which is then hosted at a subdomain that matches their user name. Each user has only one subdomain and when they log in, all their activity is confined to their subdomain. A user's home page and account info is accessed only through the subdomain that matches their user name. 
+
+For an implementation of "Basecamp-style subdomains in Rails," see:
 
 "Steve Alex's Basecamp-style fork":http://github.com/salex/rails3-subdomain-devise.
+
+Sachin Sagar Rai (millisami) has revised Steve Alex's Basecamp-style fork to use Mongodb with Mongoid:
+
+"Millisami's Basecamp-style fork with Mongoid":http://github.com/millisami/rails3-subdomain-devise.
 
 (Got your own? Contact me and I will add it here.)
 
