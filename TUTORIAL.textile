@@ -2,7 +2,14 @@ h1. Rails3-Subdomain-Devise
 
 Use this project as a starting point for a Rails 3 application that uses subdomains and authentication. User management and authentication is implemented using "Devise":http://github.com/plataformatec/devise.
 
-h1. Tutorial
+h2. Help and More Information
+
+To keep up to date with development of this app and others, follow me on Twitter:
+"http://twitter.com/yaxdotcom":http://twitter.com/yaxdotcom.
+
+Any issues? Please create an "Issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub.
+
+h2. Tutorial
 
 This tutorial documents each step that you must follow to create this application. Every step is documented concisely, so a complete beginner can create this application without any additional knowledge. However, no explanation is offered for any of the steps, so if you are a beginner, you're advised to look for an introduction to Rails elsewhere. Refer to the "Rails Guides":http://guides.rails.info/ site for help if you are a beginner.
 
@@ -1223,7 +1230,7 @@ h3. Credits
 Daniel Kehoe ("http://danielkehoe.com/":http://danielkehoe.com/) implemented the application and wrote the tutorial.
 
 Was this useful to you? Follow me on Twitter:
-"http://twitter.com/danielkehoe":http://twitter.com/danielkehoe
+"http://twitter.com/yaxdotcom":http://twitter.com/yaxdotcom
 and tweet some praise. I'd love to know you were helped out by the tutorial.
 
 h4. Contributors
