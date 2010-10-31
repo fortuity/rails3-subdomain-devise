@@ -4,7 +4,7 @@ Use this project as a starting point for a Rails 3 application that uses subdoma
 
 h2. Help and More Information
 
-To keep up to date with development of this app and others, follow me on Twitter:
+To keep up to date with development of this app, follow me on Twitter:
 "http://twitter.com/yaxdotcom":http://twitter.com/yaxdotcom.
 
 Any issues? Please create an "Issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub.
