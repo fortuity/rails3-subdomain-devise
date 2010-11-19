@@ -50,7 +50,7 @@ This tutorial is based on Rails 3 and Devise 1.1.3.
 Before beginning this tutorial, you need to install 
 
 * The Ruby language (version 1.8.7 or 1.9.2)
-* Rails (version 3.0.1)
+* Rails (version 3.0.3)
 * A working installation of SQLite (preferred), MySQL, or PostgreSQL
 
 I recommend installing rvm, the "Ruby Version Manager":http://rvm.beginrescueend.com/, to manage multiple versions of Rails if you have a mix of Rails 3 and Rails 2 applications.
@@ -61,8 +61,6 @@ If you are using rvm, you can see a list of the Ruby versions currently installe
 Check that appropriate versions of Ruby and Rails are installed in your development environment:
 @$ ruby -v@
 @$ rails -v@
-
-If you intend to deploy to "Heroku":http://heroku.com/, note that Heroku supports Ruby version 1.8.7 but not Ruby version 1.9.2 (as of 5 September 2010).
 
 h2. Generating the Application
 
@@ -93,22 +91,21 @@ h2. Set Up Gems
 
 h3. About Required Gems
 
-The application uses the following gems:
+The application uses the following gems.
 
-* rails (version 3.0.1)
-* sqlite3-ruby
-* devise (version 1.1.3)
-* friendly_id (version 3.1.7)
+The SQLite3 gem is used for the database. You can substitute a different database if you wish.
+
+The FriendlyId gem is used to give users and subdomains easily recognizable strings instead of numeric ids in URLs.
 
 I recommend checking for newer versions of these gems before proceeding:
 
-* "Check rubygems.org for the rails gem":http://rubygems.org/gems/rails
-* "Check rubygems.org for the devise gem":http://rubygems.org/gems/devise
-* "Check rubygems.org for the friendly_id gem":http://rubygems.org/gems/friendly_id
+* rails (version 3.0.3) "(check rubygems.org for the rails gem)":http://rubygems.org/gems/rails
+* devise (version 1.1.3) "(Check rubygems.org for the devise gem)":http://rubygems.org/gems/devise
+* friendly_id (version 3.1.7) "(Check rubygems.org for the friendly_id gem)":http://rubygems.org/gems/friendly_id
 
-The app has been tested with the indicated versions. If you are able to build the app with a newer gem, please create an "issue":http://github.com/fortuity/rails3-mongoid-devise/issues on GitHub and I will update the app.
+The app has been tested with the indicated versions. If you are able to build the app with a newer gem, please create an "issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub and I will update the app.
 
-h3. Install the Gems
+h3. Install the Required Gems
 
 Install the required gems on your computer:
 
@@ -117,6 +114,8 @@ Install the required gems on your computer:
 If you need to troubleshoot, you can check which gems are installed on your computer with:
 
 @$ gem list --local@
+
+Keep in mind that you have installed these gems locally. When you deploy the app to another server, the same gems (and versions) must be available.
 
 h2. Getting Started
 
@@ -207,8 +206,6 @@ For your convenience, here are instructions for deploying your app to Heroku. He
 
 To deploy this app to Heroku, you must have a Heroku account. If you need to obtain one, visit "http://heroku.com/":http://heroku.com/ to set up an account. 
 
-Note that Heroku supports Ruby version 1.8.7 but not Ruby version 1.9.2 (as of 5 September 2010). If you've developed the app locally using Ruby version 1.9.2, you may wish to use Ruby Version Manager (rvm) to switch to Ruby version 1.8.7 and test the app before deploying to Heroku.
-
 Make sure the Heroku gem is in your *Gemfile*. If it's not, add it and run
 
 @$ bundle install@
@@ -219,9 +216,9 @@ If you've just created a Heroku account, add your public key immediately after i
 
 h3. Create Your Application on Heroku
 
-Use the Heroku create command to create and name your new app> Specify the "bamboo-ree-1.8.7" stack so Heroku will allow you to use Rails 3.
+Use the Heroku create command to create and name your new app.
 
-@$ heroku create _myapp_ --stack bamboo-ree-1.8.7@
+@$ heroku create _myapp_@
 
 h3. Heroku Add-ons and DNS Configuration
 
@@ -338,6 +335,8 @@ h4. Contributors
 
 Thank you to contributor Fred Schoeneman for improving the tutorial.
 Thank you to contributor Charlie Ussery for suggesting how to ignore the "www" subdomain.
+Thank you to contributor Tom Howlett for suggesting how to use subdomains in Devise emails.
+Thank you to contributor Tom Mornini for improvements to forms.
 
 h2. License
 
