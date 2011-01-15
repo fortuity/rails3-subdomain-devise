@@ -72,19 +72,19 @@ gsub_file 'public/robots.txt', /# Disallow/, 'Disallow'
 puts "setting up the Gemfile..."
 run 'rm Gemfile'
 create_file 'Gemfile', "source 'http://rubygems.org'\n"
-gem 'rails', '3.0.1'
+gem 'rails', '3.0.3'
 if !mongoid_flag
   gem 'sqlite3-ruby', :require => 'sqlite3'
-  gem 'friendly_id', '3.1.7'
+  gem 'friendly_id', '3.1.8'
 end
-gem 'devise', '1.1.3'
+gem 'devise', '1.1.5'
 
 #----------------------------------------------------------------------------
 # Heroku Option
 #----------------------------------------------------------------------------
 if heroku_flag
   puts "adding Heroku gem to the Gemfile..."
-  gem 'heroku', '1.11.0', :group => :development
+  gem 'heroku', '1.17.5', :group => :development
 end
 
 #----------------------------------------------------------------------------
@@ -93,10 +93,10 @@ end
 if haml_flag
   puts "setting up Gemfile for Haml..."
   append_file 'Gemfile', "\n# Bundle gems needed for Haml\n"
-  gem 'haml', '3.0.22'
+  gem 'haml', '3.0.25'
   gem 'haml-rails', '0.3.4', :group => :development
   # the following gems are used to generate Devise views for Haml
-  gem 'hpricot', '0.8.2', :group => :development
+  gem 'hpricot', '0.8.3', :group => :development
   gem 'ruby_parser', '2.0.5', :group => :development
 end
 
@@ -105,7 +105,7 @@ end
 #----------------------------------------------------------------------------
 if jquery_flag
   puts "setting up Gemfile for jQuery..."
-  gem 'jquery-rails', '0.2.4'
+  gem 'jquery-rails', '0.2.6'
 end
 
 #----------------------------------------------------------------------------
@@ -115,8 +115,8 @@ if mongoid_flag
   puts "setting up Gemfile for Mongoid..."
   gsub_file 'Gemfile', /gem \'sqlite3-ruby/, '# gem \'sqlite3-ruby'
   append_file 'Gemfile', "\n# Bundle gems needed for Mongoid\n"
-  gem "mongoid", "2.0.0.beta.19"
-  gem 'bson_ext', '1.1.1'
+  gem "mongoid", "2.0.0.beta.20"
+  gem 'bson_ext', '1.1.5'
 end
 
 puts "installing gems (takes a few minutes!)..."
