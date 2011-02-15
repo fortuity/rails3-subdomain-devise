@@ -2,6 +2,10 @@ h1. Rails3-Subdomain-Devise
 
 Use this project as a starting point for a Rails 3 application that uses subdomains and authentication. User management and authentication is implemented using "Devise":http://github.com/plataformatec/devise.
 
+There's a detailed tutorial (walk-through) to show how it's built.
+
+You can clone this app or generate a new Rails application using this app as a template.
+
 h2. Help and More Information
 
 To keep up to date with development of this app, follow me on Twitter:
@@ -45,15 +49,13 @@ No testing (RSpec or otherwise) is implemented. This app only serves to demonstr
 
 h2. Assumptions
 
-This tutorial is based on Rails 3 and Devise 1.1.3.
-
-Before beginning this tutorial, you need to install 
+Before running this app, you need to install
 
 * The Ruby language (version 1.8.7 or 1.9.2)
-* Rails (version 3.0.3)
+* Rails (version 3.0.4)
 * A working installation of SQLite (preferred), MySQL, or PostgreSQL
 
-I recommend installing rvm, the "Ruby Version Manager":http://rvm.beginrescueend.com/, to manage multiple versions of Rails if you have a mix of Rails 3 and Rails 2 applications.
+I recommend installing rvm, the "Ruby Version Manager":http://rvm.beginrescueend.com/, to manage multiple versions of Rails.
 
 If you are using rvm, you can see a list of the Ruby versions currently installed:
 @$ rvm list@
@@ -66,20 +68,20 @@ h2. Generating the Application
 
 To get started with a new Rails application based on this example, you can generate a new Rails app:
 
-@$ rails new app_name -m https://github.com/fortuity/rails3-subdomain-devise/raw/master/template.rb@
+@$ rails new app_name -m https://github.com/fortuity/rails3-application-templates/raw/master/rails3-subdomain-devise-template.rb@
 
-bq. Generating a Rails application from an "HTTPS" URL does not work in Rails 3.0.3 (and earlier versions). Expect it to be fixed in Rails 3.0.4. For details about the problem, see the "GitHub Support Issue":http://support.github.com/discussions/site/2213-github-https-redirect-breaks-rails-application-generator-templates and the "Rails 3.0.4 Patch":https://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/5926 that will fix it. In the meantime, use @$ git clone git(at)github.com:fortuity/rails3-subdomain-devise.git@ to get a copy of the application.
+bq. You MUST be using Rails 3.0.4. Generating a Rails application from an “HTTPS” URL does not work in Rails 3.0.3 and earlier versions.
 
-This creates a new Rails app (with the @app_name@ you provide) on your computer. It includes everything in the example app (as described in the "tutorial":http://github.com/fortuity/rails3-subdomain-devise/wiki/Tutorial-%28Walkthrough%29).
+This creates a new Rails app (with the @app_name@ you provide) on your computer.
 
-Plus, the application generator template offers you the following options:
+The application template offers you the following options:
 
 * set up your view files using the Haml templating language
 * use jQuery instead of Prototype
 * install the heroku gem for deployment to Heroku
 * use Mongoid instead of Active Record for database access
 
-If you wish to "change the recipe" to generate the app with your own customized options, you can copy and edit the file *template.rb*.
+If you wish to "change the recipe" to generate the app with your own customized options, you can copy and edit the file *rails3-subdomain-devise-template.rb* found at the project "fortuity/rails3-application-templates":https://github.com/fortuity/rails3-application-templates.
 
 h2. Downloading the Example
 
@@ -87,7 +89,7 @@ I recommend "Generating the Application" as described above. If that doesn't wor
 
 @$ git clone git(at)github.com:fortuity/rails3-subdomain-devise.git@
 
-The source code is managed with Git (a version control system) and hosted at GitHub. You'll need Git on your machine (install it from "http://git-scm.com/":http://git-scm.com/).
+The source code is managed with Git (a version control system). You'll need Git on your machine (install it from "http://git-scm.com/":http://git-scm.com/).
 
 h2. Set Up Gems
 
