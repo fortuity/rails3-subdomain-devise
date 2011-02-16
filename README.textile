@@ -103,9 +103,9 @@ The FriendlyId gem is used to give users and subdomains easily recognizable stri
 
 I recommend checking for newer versions of these gems before proceeding:
 
-* rails (version 3.0.3) "(check rubygems.org for the rails gem)":http://rubygems.org/gems/rails
-* devise (version 1.1.3) "(Check rubygems.org for the devise gem)":http://rubygems.org/gems/devise
-* friendly_id (version 3.1.7) "(Check rubygems.org for the friendly_id gem)":http://rubygems.org/gems/friendly_id
+* rails (version 3.0.4) "(check rubygems.org for the rails gem)":http://rubygems.org/gems/rails
+* devise (version 1.2.rc) "(Check rubygems.org for the devise gem)":http://rubygems.org/gems/devise
+* friendly_id (version 3.2.1) "(Check rubygems.org for the friendly_id gem)":http://rubygems.org/gems/friendly_id
 
 The app has been tested with the indicated versions. If you are able to build the app with a newer gem, please create an "issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub and I will update the app.
 
