@@ -1,12 +1,12 @@
 h1. Rails3-Subdomain-Devise
 
-This is an example *Rails 3 application* that shows how to use *Devise* with *subdomains*. The "Devise":http://github.com/plataformatec/devise gem gives you ready-made authentication and user management. 
+This is an example *Rails 3 application* that shows how to use *Devise* with *subdomains*. The "Devise":http://github.com/plataformatec/devise gem gives you ready-made authentication and user management.
 
-Best of all, there's a "detailed tutorial":http://github.com/fortuity/rails3-subdomain-devise/wiki/Tutorial-%28Walkthrough%29 (walk-through) to show how it's built.
+h2. The Project Has Moved!
 
-You can clone this app or generate a new Rails application using this app as a template.
+Please visit the project at its "new home":https://github.com/RailsApps/rails3-subdomains:
 
-Any issues? Please create an "Issue":http://github.com/fortuity/rails3-subdomain-devise/issues on GitHub.
+h4. "Rails 3.1 Subdomains and Devise":https://github.com/RailsApps/rails3-subdomains
 
 h2. !http://twitter-badges.s3.amazonaws.com/t_logo-a.png(Follow on Twitter)!:http://www.twitter.com/rails_apps Follow on Twitter
 
